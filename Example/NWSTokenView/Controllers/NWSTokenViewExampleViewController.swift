@@ -108,7 +108,7 @@ class NWSTokenViewExampleViewController: UIViewController, UITableViewDataSource
     }
     
     // MARK: Keyboard
-    func keyboardWillShow(_ notification: Notification)
+    @objc func keyboardWillShow(_ notification: Notification)
     {
         if let keyboardSize = ((notification as NSNotification).userInfo?[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
             let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
@@ -118,7 +118,7 @@ class NWSTokenViewExampleViewController: UIViewController, UITableViewDataSource
         }        
     }
     
-    func keyboardWillHide(_ notification: NotificationCenter)
+    @objc func keyboardWillHide(_ notification: NotificationCenter)
     {
         tableView.contentInset = UIEdgeInsets.zero
         tableView.scrollIndicatorInsets = UIEdgeInsets.zero
@@ -334,8 +334,8 @@ class NWSTokenViewExampleViewController: UIViewController, UITableViewDataSource
         }
         
         // Check if typed an email and hit space
-        let lastChar = text[text.characters.index(before: text.endIndex)]
-        if lastChar == " " && text.substring(with: text.startIndex..<text.characters.index(before: text.endIndex)).isEmail()
+        let lastChar = text[text.index(before: text.endIndex)]
+        if lastChar == " " && String(text[text.startIndex..<text.index(before: text.endIndex)]).isEmail()
         {
             self.didTypeEmailInTokenView()
             return
@@ -436,7 +436,7 @@ extension String
     func isEmail() -> Bool
     {
         let regex = try? NSRegularExpression(pattern: "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,4}$", options: .caseInsensitive)
-        return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.characters.count)) != nil
+        return regex?.firstMatch(in: self, options: [], range: NSMakeRange(0, self.count)) != nil
     }
 }
 
